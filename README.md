@@ -57,6 +57,9 @@ It is also integrated into the **FoodDetector** real-time dietary assessment sys
 
 ## Citation
 
+This project uses the VietFood67 dataset. The dataset is provided by the original authors and cited as follows:
+
+```bibtex
 @inproceedings{vietfood67_soict2024,
   title={Now I Know What I Am Eating: Real-Time Tracking and Nutritional Insights Using VietFood67 to Enhance User Experience},
   author={Nguyen, Viet Hoang Nam and Tran, Bao Tu and Ton That, Minh Vu and Vi, Chi Thanh},
@@ -69,12 +72,13 @@ It is also integrated into the **FoodDetector** real-time dietary assessment sys
 }
 
 @incollection{vietfood67_igi2025,
-  title={It’s Yummy: Real-Time Detection and Recognition of Vietnamese Dishes},
+  title={It's Yummy: Real-Time Detection and Recognition of Vietnamese Dishes},
   author={Nguyen, Viet Hoang Nam and Vi, Chi Thanh},
   booktitle={Navigating Computing Challenges for a Sustainable World},
   publisher={IGI Global},
   year={2025},
   doi={10.4018/979-8-3373-0462-5.ch001}
 }
+
 
 
