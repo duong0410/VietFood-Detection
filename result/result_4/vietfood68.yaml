@@ -1,0 +1,72 @@
+train: /kaggle/input/vietfood68/dataset/images/train
+val: /kaggle/input/vietfood68/dataset/images/valid
+nc: 68
+names:
+- Banh canh
+- Banh chung
+- Banh cuon
+- Banh khot
+- Banh mi
+- Banh trang
+- Banh trang tron
+- Banh xeo
+- Bo kho
+- Bo la lot
+- Bong cai
+- Bun
+- Bun bo Hue
+- Bun cha
+- Bun dau
+- Bun mam
+- Bun rieu
+- Ca
+- Ca chua
+- Ca phao
+- Ca rot
+- Canh
+- Cha
+- Cha gio
+- Chanh
+- Com
+- Com tam
+- Con nguoi
+- Cu kieu
+- Cua
+- Dau hu
+- Dua chua
+- Dua leo
+- Goi cuon
+- Hamburger
+- Heo quay
+- Hu tieu
+- Kho qua thit
+- Khoai tay chien
+- Lau
+- Long heo
+- Mi
+- Muc
+- Nam
+- Oc
+- Ot chuong
+- Pho
+- Pho mai
+- Rau
+- Salad
+- Thit bo
+- Thit ga
+- Thit heo
+- Thit kho
+- Thit nuong
+- Tom
+- Trung
+- Xoi
+- Banh beo
+- Cao lau
+- Mi Quang
+- Com chien Duong Chau
+- Bun cha ca
+- Com chien ga
+- Chao long
+- Nom hoa chuoi
+- Nui xao bo
+- Sup cua
