@@ -1,0 +1,17 @@
+# Core dependencies
+PyQt5==5.15.10
+PyQt5-Qt5==5.15.2
+PyQt5-sip==12.13.0
+
+# YOLO and computer vision
+ultralytics==8.2.0
+opencv-python==4.9.0.80
+torch>=2.0.0
+torchvision>=0.15.0
+
+# Image processing
+Pillow==10.2.0
+numpy==1.26.4
+
+# Utilities
+PyYAML==6.0.1
