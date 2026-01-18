@@ -1,4 +1,4 @@
-# VietFood Detection 🍜
+# VietFood Detection 
 
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue)](https://www.python.org/)
 [![PyQt5](https://img.shields.io/badge/PyQt5-5.15-green)](https://pypi.org/project/PyQt5/)
@@ -9,7 +9,7 @@
 
 ---
 
-## 📋 Table of Contents
+##  Table of Contents
 - [Overview](#overview)
 - [Features](#features)
 - [Project Structure](#project-structure)
@@ -37,9 +37,9 @@ VietFood-Detection là một dự án object detection dựa trên deep learning
 
 ---
 
-## ✨ Features
+##  Features
 
-### 🖼️ Giao diện Desktop Application
+###  Giao diện Desktop Application
 - Giao diện đồ họa với PyQt5
 - Hỗ trợ **3 chế độ detection**:
   - **Image Mode**: Detect từ ảnh tĩnh
@@ -371,7 +371,7 @@ Contributions are welcome! Please:
 ---
 
 
-## 📧 Contact
+##  Contact
 
 For questions or support, please open an issue on GitHub.
 
