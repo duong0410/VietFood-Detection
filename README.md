@@ -1,4 +1,4 @@
-# VietFood Detection 🍜
+# VietFood Detection 
 
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue)](https://www.python.org/)
 [![PyQt5](https://img.shields.io/badge/PyQt5-5.15-green)](https://pypi.org/project/PyQt5/)
@@ -9,7 +9,7 @@
 
 ---
 
-## 📋 Table of Contents
+##  Table of Contents
 - [Overview](#overview)
 - [Features](#features)
 - [Project Structure](#project-structure)
@@ -37,9 +37,9 @@ VietFood-Detection là một dự án object detection dựa trên deep learning
 
 ---
 
-## ✨ Features
+##  Features
 
-### 🖼️ Giao diện Desktop Application
+###  Giao diện Desktop Application
 - Giao diện đồ họa với PyQt5
 - Hỗ trợ **3 chế độ detection**:
   - **Image Mode**: Detect từ ảnh tĩnh
@@ -48,7 +48,6 @@ VietFood-Detection là một dự án object detection dựa trên deep learning
 - Điều chỉnh tham số ngay trên giao diện (Confidence, IoU threshold)
 - Hiển thị kết quả với bounding boxes và labels
 - Lưu kết quả detection
-- Giao diện song ngữ Việt-Anh
 
 ###  Model Detection
 - Nhận diện **68 loại món ăn Việt Nam**
@@ -184,7 +183,7 @@ python main.py
 2. Click **" Tải video / Upload Video"**
 3. Adjust parameters if needed
 4. Click **" Bắt đầu / Start"** to begin processing
-5. Use **" Tạm dừng / Pause"** and **"⏹️ Dừng / Stop"** to control playback
+5. Use **" Tạm dừng / Pause"** and **" Dừng / Stop"** to control playback
 6. Click **" Lưu kết quả / Save Result"** to export processed video
 
 #### 3.  Webcam Detection
@@ -192,7 +191,7 @@ python main.py
 2. Select camera from dropdown (if multiple cameras available)
 3. Click **" Bắt đầu / Start"** to begin real-time detection
 4. Click **" Dừng / Stop"** to stop camera
-5. Take snapshots with **"📷 Chụp ảnh / Capture"**
+5. Take snapshots with **" Chụp ảnh / Capture"**
 
 ---
 
@@ -328,11 +327,9 @@ pip install opencv-contrib-python
 
 ---
 
-## 📚 Citation
+##  Citation
 
 **Note:** This project uses the VietFood67 dataset created by Nguyen Viet Hoang Nam et al. We do not own the dataset. All credit goes to the original authors.
-
-If you use this project or the VietFood67 dataset, please cite:
 
 ```bibtex
 @inproceedings{vietfood67_soict2024,
@@ -371,7 +368,7 @@ Contributions are welcome! Please:
 ---
 
 
-## 📧 Contact
+## Contact
 
 For questions or support, please open an issue on GitHub.
 

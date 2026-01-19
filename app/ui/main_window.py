@@ -61,6 +61,7 @@ class VideoProcessingThread(QThread):
         self.save_path = save_path
         self.is_running = True
         self.is_paused = False
+        self.rotation_angle = 0  # Manual rotation: 0, 90, 180, 270
     
     def run(self):
         try:
@@ -75,15 +76,26 @@ class VideoProcessingThread(QThread):
                 )
             
             frame_count = 0
+            frame_time = 1.0 / processor.fps if processor.fps > 0 else 0.033  # Time per frame
             
             while self.is_running:
                 if self.is_paused:
                     time.sleep(0.1)
                     continue
                 
+                frame_start = time.time()
+                
                 ret, frame = processor.read_frame()
                 if not ret:
                     break
+                
+                # Apply manual rotation
+                if self.rotation_angle == 90:
+                    frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
+                elif self.rotation_angle == 180:
+                    frame = cv2.rotate(frame, cv2.ROTATE_180)
+                elif self.rotation_angle == 270:
+                    frame = cv2.rotate(frame, cv2.ROTATE_90_COUNTERCLOCKWISE)
                 
                 # Detect
                 results = self.detector.detect_from_array(frame)
@@ -104,6 +116,12 @@ class VideoProcessingThread(QThread):
                 self.progress_update.emit(progress, frame_count, processor.frame_count)
                 
                 frame_count += 1
+                
+                # Control playback speed to match original FPS
+                elapsed = time.time() - frame_start
+                sleep_time = frame_time - elapsed
+                if sleep_time > 0:
+                    time.sleep(sleep_time)
             
             processor.release()
             if writer:
@@ -113,6 +131,10 @@ class VideoProcessingThread(QThread):
             
         except Exception as e:
             self.error.emit(str(e))
+    
+    def set_rotation(self, angle):
+        """Set rotation angle (0, 90, 180, 270)"""
+        self.rotation_angle = angle
     
     def pause(self):
         self.is_paused = True
@@ -286,8 +308,11 @@ class MainWindow(QMainWindow):
         # Video mode controls
         self.video_controls = QWidget()
         self.video_controls.setVisible(False)
+        video_main_layout = QVBoxLayout()
+        self.video_controls.setLayout(video_main_layout)
+        
+        # First row: Upload and playback controls
         video_layout = QHBoxLayout()
-        self.video_controls.setLayout(video_layout)
         
         self.upload_video_btn = QPushButton("📁 Tải video / Upload Video")
         self.upload_video_btn.clicked.connect(self.upload_video)
@@ -312,6 +337,35 @@ class MainWindow(QMainWindow):
         self.save_video_btn.setEnabled(False)
         self.save_video_btn.clicked.connect(self.save_video_result)
         video_layout.addWidget(self.save_video_btn)
+        
+        video_main_layout.addLayout(video_layout)
+        
+        # Second row: Rotation controls
+        rotation_layout = QHBoxLayout()
+        rotation_layout.addWidget(QLabel("Xoay video / Rotate:"))
+        
+        self.rotate_left_btn = QPushButton("↶ 90° (Trái/Left)")
+        self.rotate_left_btn.setEnabled(False)
+        self.rotate_left_btn.clicked.connect(self.rotate_left)
+        rotation_layout.addWidget(self.rotate_left_btn)
+        
+        self.rotate_right_btn = QPushButton("↷ 90° (Phải/Right)")
+        self.rotate_right_btn.setEnabled(False)
+        self.rotate_right_btn.clicked.connect(self.rotate_right)
+        rotation_layout.addWidget(self.rotate_right_btn)
+        
+        self.rotate_180_btn = QPushButton("↻ 180°")
+        self.rotate_180_btn.setEnabled(False)
+        self.rotate_180_btn.clicked.connect(self.rotate_180)
+        rotation_layout.addWidget(self.rotate_180_btn)
+        
+        self.reset_rotation_btn = QPushButton("⟲ Đặt lại / Reset")
+        self.reset_rotation_btn.setEnabled(False)
+        self.reset_rotation_btn.clicked.connect(self.reset_rotation)
+        rotation_layout.addWidget(self.reset_rotation_btn)
+        
+        rotation_layout.addStretch()
+        video_main_layout.addLayout(rotation_layout)
         
         layout.addWidget(self.video_controls)
         
@@ -535,7 +589,12 @@ class MainWindow(QMainWindow):
         
         if file_path:
             self.video_path = file_path
+            self.video_rotation = 0  # Reset rotation
             self.start_video_btn.setEnabled(True)
+            self.rotate_left_btn.setEnabled(True)
+            self.rotate_right_btn.setEnabled(True)
+            self.rotate_180_btn.setEnabled(True)
+            self.reset_rotation_btn.setEnabled(True)
             self.statusBar().showMessage(f'Đã tải video: {os.path.basename(file_path)}')
     
     def start_video(self):
@@ -546,8 +605,15 @@ class MainWindow(QMainWindow):
         self.pause_video_btn.setEnabled(True)
         self.stop_video_btn.setEnabled(True)
         self.upload_video_btn.setEnabled(False)
+        self.rotate_left_btn.setEnabled(False)
+        self.rotate_right_btn.setEnabled(False)
+        self.rotate_180_btn.setEnabled(False)
+        self.reset_rotation_btn.setEnabled(False)
         
         self.video_thread = VideoProcessingThread(self.detector, self.video_path)
+        # Apply current rotation
+        if hasattr(self, 'video_rotation'):
+            self.video_thread.set_rotation(self.video_rotation)
         self.video_thread.frame_ready.connect(self.on_video_frame_ready)
         self.video_thread.progress_update.connect(self.on_video_progress)
         self.video_thread.finished.connect(self.on_video_finished)
@@ -622,7 +688,37 @@ class MainWindow(QMainWindow):
         self.pause_video_btn.setEnabled(False)
         self.stop_video_btn.setEnabled(False)
         self.upload_video_btn.setEnabled(True)
+        self.rotate_left_btn.setEnabled(True)
+        self.rotate_right_btn.setEnabled(True)
+        self.rotate_180_btn.setEnabled(True)
+        self.reset_rotation_btn.setEnabled(True)
         self.progress_bar.setValue(0)
+    
+    def rotate_left(self):
+        """Rotate video 90 degrees counter-clockwise"""
+        if not hasattr(self, 'video_rotation'):
+            self.video_rotation = 0
+        self.video_rotation = (self.video_rotation + 270) % 360
+        self.statusBar().showMessage(f'Video xoay: {self.video_rotation}° / Rotation: {self.video_rotation}°')
+    
+    def rotate_right(self):
+        """Rotate video 90 degrees clockwise"""
+        if not hasattr(self, 'video_rotation'):
+            self.video_rotation = 0
+        self.video_rotation = (self.video_rotation + 90) % 360
+        self.statusBar().showMessage(f'Video xoay: {self.video_rotation}° / Rotation: {self.video_rotation}°')
+    
+    def rotate_180(self):
+        """Rotate video 180 degrees"""
+        if not hasattr(self, 'video_rotation'):
+            self.video_rotation = 0
+        self.video_rotation = (self.video_rotation + 180) % 360
+        self.statusBar().showMessage(f'Video xoay: {self.video_rotation}° / Rotation: {self.video_rotation}°')
+    
+    def reset_rotation(self):
+        """Reset video rotation to 0"""
+        self.video_rotation = 0
+        self.statusBar().showMessage('Đã đặt lại xoay / Rotation reset')
     
     # Webcam mode methods
     def start_webcam(self):
